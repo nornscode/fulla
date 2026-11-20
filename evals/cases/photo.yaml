@@ -1,6 +1,6 @@
 why: >
-  A photo reached the manager as a bracketed note and she answered as if she
-  had seen it (#31). She must say she can't see it and work from the caption
+  A photo reached the manager as a bracketed note and it answered as if it
+  had seen it (#31). The manager must say it can't see the photo and work from the caption
   or ask for a description.
 messages:
   - user: "[The owner sent a photo, which you can't see.]\nWhy did my cookies burn"

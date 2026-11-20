@@ -1,4 +1,4 @@
-"""Fulla's hard limits: what code stops her from doing, stated for her.
+"""Fulla's hard limits: what code stops it from doing, stated for it.
 
 Each entry names the code that enforces it, as `module:symbol` (a symbol may
 be dotted, `Class.method`; one per messenger where each has its own), and a
@@ -7,8 +7,8 @@ stays. The list is rendered into the manager's capability map by
 `worker.manager_prompt`. A limit is added here only when code enforces it;
 a rule the prompt alone holds is not a hard limit.
 
-This file holds limits on Fulla. A change to it loosens or tightens what she
-believes she can do, and is the owner's to make.
+This file holds limits on Fulla. A change to it loosens or tightens what Fulla
+believes it can do, and is the owner's to make.
 """
 
 from __future__ import annotations

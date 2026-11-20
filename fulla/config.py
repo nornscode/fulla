@@ -25,7 +25,7 @@ class ChannelConfig:
 class SignalConfig:
     api_url: str
     number: str  # Fulla's, E.164
-    owner: str  # who may talk to her: number and/or account id, comma-separated
+    owner: str  # who may talk to Fulla: number and/or account id, comma-separated
 
     @property
     def owner_number(self) -> str:
@@ -42,7 +42,7 @@ class SmsConfig:
     account_sid: str
     auth_token: str
     number: str  # Fulla's, E.164
-    owner: str  # the owner's, E.164: the only number whose texts she reads
+    owner: str  # the owner's, E.164: the only number whose texts Fulla reads
 
 
 @dataclass
@@ -71,8 +71,8 @@ class FullaConfig:
     secret: str = ""  # encrypts groups' credentials at rest (FULLA_SECRET); empty means none can be stored
     github_app_id: str = ""  # a GitHub App's id (FULLA_GITHUB_APP_ID); with the key, it replaces stored GitHub tokens
     github_app_key: str = ""  # its private key, PEM (FULLA_GITHUB_APP_KEY)
-    repo: str = ""  # Fulla's own repository, owner/name (FULLA_REPO); empty means she is not told
-    commit: str = ""  # the commit she is running, baked in at build (FULLA_COMMIT); empty when unknown
+    repo: str = ""  # Fulla's own repository, owner/name (FULLA_REPO); empty means Fulla is not told
+    commit: str = ""  # the commit Fulla is running, baked in at build (FULLA_COMMIT); empty when unknown
 
 
 @dataclass
@@ -112,7 +112,7 @@ class Config:
     @property
     def owners(self) -> dict[str, int | str]:
         """The owner's chat id on each messenger that is configured. Any
-        number may be: Fulla listens on every one and answers where she was
+        number may be: Fulla listens on every one and answers where it was
         spoken to."""
         owners: dict[str, int | str] = {}
         if self.telegram.bot_token and self.telegram.user_id:

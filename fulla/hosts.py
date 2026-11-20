@@ -1,5 +1,5 @@
-"""The machines Fulla knows: her memory of every worker that has ever
-announced itself, so she can route a request to the right one.
+"""The machines Fulla knows: its memory of every worker that has ever
+announced itself, so it can route a request to the right one.
 
 A machine worker (the Mac's `fulla-mac`, a Linux box's `fulla-host`) serves
 its tools under its own prefix, `mac_` or `<name>_`, and tells Fulla it

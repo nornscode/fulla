@@ -171,8 +171,8 @@ def test_flags_need_no_terminal_and_earlier_values_are_the_defaults(home, monkey
     v3 = install.gather("host", install.parser("host").parse_args([]), repo=REPO, interactive=True)
     assert v3 == v
     assert [a.split(" [")[0].rstrip(": ") for a in asked] == [
-        "tmux sessions she may reach (comma-separated, empty for none)",
-        "give her a shell and the files on this machine, as this user? (y/n)", "Norns URL", "Norns API key",
+        "tmux sessions Fulla may reach (comma-separated, empty for none)",
+        "give Fulla a shell and the files on this machine, as this user? (y/n)", "Norns URL", "Norns API key",
         "Fulla's URL", "this machine's name (lowercase letters and digits)"]
     assert "Norns API key [keep the current one]: " in asked  # the key itself is never shown
 

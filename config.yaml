@@ -1,6 +1,6 @@
 channel:
   # Fulla listens on every messenger configured below (telegram, signal,
-  # sms) and answers where she was spoken to. The primary one gets what has
+  # sms) and answers where it was spoken to. The primary one gets what has
   # no origin: the morning brief, reminders, anything scheduled. The
   # standing conversation is keyed by it, so changing it starts the chat over.
   primary: ${FULLA_CHANNEL:-telegram}
@@ -10,7 +10,7 @@ channel:
   social_daily_cap: ${FULLA_SOCIAL_DAILY_CAP:-50}
   # When addressed in a group, Fulla reads the messages before it, this many
   # at most and none older than two hours, so "us" and "that" mean something.
-  # They reach her as untrusted text. 0 gives her the addressed message alone.
+  # They reach Fulla as untrusted text. 0 gives it the addressed message alone.
   group_context: ${FULLA_GROUP_CONTEXT:-8}
 
 signal:
@@ -18,13 +18,13 @@ signal:
   api_url: ${FULLA_SIGNAL_URL:-http://fulla-signal.internal:8080}
   # Fulla's own number, registered there, E.164.
   number: ${FULLA_SIGNAL_NUMBER:-}
-  # Who may talk to her: the owner's number, their Signal account id, or
+  # Who may talk to Fulla: the owner's number, their Signal account id, or
   # both, comma-separated. Everyone else is dropped.
   owner: ${FULLA_SIGNAL_OWNER:-}
 
 sms:
   # Text messages through Twilio. The number is Fulla's (it can be the one
-  # Signal is registered on), the owner's is the only one she reads. All
+  # Signal is registered on), the owner's is the only one Fulla reads. All
   # four or none; the auth token also signs Twilio's webhook.
   account_sid: ${TWILIO_ACCOUNT_SID:-}
   auth_token: ${TWILIO_AUTH_TOKEN:-}
@@ -72,10 +72,10 @@ fulla:
   # for a repository among that group's sources. Both empty: stored tokens are used.
   github_app_id: ${FULLA_GITHUB_APP_ID:-}
   github_app_key: ${FULLA_GITHUB_APP_KEY:-}
-  # Fulla's own repository, owner/name. Connect it to "me" with a token and she
-  # reads her own code: what changed, whether a gap has shipped. Empty: she is not told.
+  # Fulla's own repository, owner/name. Connect it to "me" with a token and Fulla
+  # reads its own code: what changed, whether a gap has shipped. Empty: Fulla is not told.
   repo: ${FULLA_REPO:-nornscode/fulla}
-  # The commit she is running, set by the Dockerfile from CI's build arg. Empty: unknown.
+  # The commit Fulla is running, set by the Dockerfile from CI's build arg. Empty: unknown.
   commit: ${FULLA_COMMIT:-}
 
 mac:

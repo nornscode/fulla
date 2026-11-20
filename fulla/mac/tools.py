@@ -851,7 +851,7 @@ _NO_HOME_FOLDER = ("There is no Shortcuts folder named {folder} on the Mac. The 
 @tool
 def mac_home_list() -> str:
     """The home automation shortcuts Fulla may run on the owner's Mac: the shortcuts in the
-    Shortcuts folder the owner set aside for her (scenes, lights, thermostat, locks). Each
+    Shortcuts folder the owner set aside for Fulla (scenes, lights, thermostat, locks). Each
     is run by name with `mac_home_run`."""
     folder = _cfg.home_folder
     try:

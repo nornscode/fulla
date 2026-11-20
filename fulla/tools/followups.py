@@ -11,8 +11,8 @@ A watch is a follow-up with no due time: `watch_environment` starts a run of
 `fulla-watch`, a small model that polls one Bubbo sandbox or coding job with
 `get_environment` / `get_coding_task` and `wait`, and delivers the same way
 only once it has changed (ready, finished, failed, the pull request opened).
-The manager is woken once per job instead of once per poll: each of her
-turns resends her whole prompt, the watcher's few lines do not. All it adds
+The manager is woken once per job instead of once per poll: each of its
+turns resends its whole prompt, the watcher's few lines do not. All it adds
 to the message is the state it saw, reduced to two words, so nothing the
 coding agent wrote reaches the manager through it.
 """

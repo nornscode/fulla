@@ -1,12 +1,12 @@
 """Who, besides the owner, may talk to Fulla, and where.
 
-Fulla's first rule is that she never acts in public. This store is the one
+Fulla's first rule is that it never acts in public. This store is the one
 exception the owner can open: a list of people, each with their ids on the
-messengers, and a list of groups the owner has let her speak in. Everyone
+messengers, and a list of groups the owner has let it speak in. Everyone
 and everywhere else is dropped at the door. The owner changes the lists from
 chat (`allow_person`, `allow_group` and the rest in tools/people.py); a group
-gets on the list by the owner adding Fulla to it and answering her private
-question about it, and a person the owner has not listed who addresses her
+gets on the list by the owner adding Fulla to it and answering its private
+question about it, and a person the owner has not listed who addresses it
 in an allowed group gets the same treatment: Fulla asks the owner once, and
 remembers the answer either way.
 

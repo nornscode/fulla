@@ -1043,7 +1043,7 @@ def test_in_a_group_only_listed_people_are_heard_and_only_when_they_address_her(
     ch.handle(in_group(SAM, "Fulla, hi", 1))  # not on the list: the owner is asked, Sam is not answered
     assert client.messages == [] and sg.sent[0][0].startswith("In Friends, ")
     people.allow_person("Sam", {"signal": SAM})
-    ch.handle(in_group(SAM, "anyone up for dinner?", 2))  # not addressed to her
+    ch.handle(in_group(SAM, "anyone up for dinner?", 2))  # not addressed to Fulla
     assert client.messages == []
     ch.handle(in_group(SAM, "fulla - pick a place", 3))
     assert len(client.messages) == 1 and client.messages[0][2] == "social:signal:group:abc"
@@ -1051,7 +1051,7 @@ def test_in_a_group_only_listed_people_are_heard_and_only_when_they_address_her(
     assert sg.sent[-1] == ("Sushi.", None)
     sushi = sg._next_id
     client.next_run = 10
-    ch.handle(in_group(SAM, "why?", 4, reply_to_message_id=sushi))  # a reply to her counts
+    ch.handle(in_group(SAM, "why?", 4, reply_to_message_id=sushi))  # a reply to Fulla counts
     assert len(client.messages) == 2
     ch.handle(Inbound(kind="reaction", transport="signal", user_id=SAM, chat_id="group:abc", group=True,
                       text="👍", message_id=sushi, date=1))  # reactions in groups mean nothing
@@ -1173,7 +1173,7 @@ def test_a_signal_mention_of_fulla_addresses_her_and_a_bare_yes_or_thumbs_up_ans
     assert sg.sent[0][0].startswith("You added me to Friends")  # asked; nothing in the group yet
     ch.handle(on_signal("yes", message_id=1700000000001))  # bare, not quoted: the one open question
     assert people.group("signal:group:abc").allowed and client.messages == []
-    # the mention arrives as her number, which she does not know is hers; she is named for her
+    # the mention arrives as Fulla's number, which it does not know is its own; it is named anyway
     ch.handle(in_group(OWNER_NUMBER, "@+16045550142 you alive?", 2, mentions=["+16045550142"]))
     assert len(client.messages) == 1 and client.messages[0][1].endswith("@Fulla you alive?")
     # a second group: 👍 on the question answers it
@@ -1319,7 +1319,7 @@ def test_an_addressed_message_carries_the_thread_before_it(tmp_path):
     assert thread_of(content) == ["Kim: when do you leave for Lisbon again?", "Sam: Weds"]
     assert content.index(THREAD_END) < content.index("[In the group Friends, addressed to you]")
     assert "Robin (the owner): Fulla, remind me" in content and content.count("Fulla, remind me") == 1
-    ch.handle_event(social_done(9, "Will do."))  # her own reply joins the thread
+    ch.handle_event(social_done(9, "Will do."))  # its own reply joins the thread
     client.next_run = 10
     ch.handle(in_group(SAM, "Fulla, me too", 4))
     assert thread_of(client.messages[1][1]) == [

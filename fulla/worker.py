@@ -527,7 +527,7 @@ anything but the one task. Times are {timezone}.
 
 
 FOLLOWUP_PROMPT = """\
-You carry one check-back that Fulla set for herself. Your message has a Key \
+You carry one check-back that Fulla set for itself. Your message has a Key \
 and a Due time. Your whole job is to still exist when it is due, deliver it \
 once, and close.
 
@@ -545,9 +545,9 @@ Times are {timezone}.
 
 
 WATCH_PROMPT = """\
-You watch one coding sandbox for Fulla, so she does not have to check it \
-herself. Your message has a Key, an Environment id and a Job id (or "none"). \
-Your whole job is to notice when it changes, tell her once, and close.
+You watch one coding sandbox for Fulla, so Fulla does not have to check it \
+itself. Your message has a Key, an Environment id and a Job id (or "none"). \
+Your whole job is to notice when it changes, tell Fulla once, and close.
 
 Steps, exactly:
 1. If Job is an id: call `get_coding_task` with that job_id. While its state \
@@ -844,10 +844,10 @@ def host_tool_names(hosts: HostStore | None = None) -> list[str]:
 
 
 def own_code(owner: str, record: GroupRecord | None, repo: str, commit: str, app: bool = False) -> str:
-    """The paragraph that tells the manager where her own code is and which
-    commit of it is running, or that she cannot reach it yet. Empty when the
+    """The paragraph that tells the manager where its own code is and which
+    commit of it is running, or that it cannot reach it yet. Empty when the
     config names no repository. The map, built from the running code, stays
-    the truth about what she can do; the repository is text like any other."""
+    the truth about what it can do; the repository is text like any other."""
     if not repo:
         return ""
     running = (f"The code you are running is commit {commit[:7]} of it; a commit merged after "
@@ -867,7 +867,7 @@ def own_code(owner: str, record: GroupRecord | None, repo: str, commit: str, app
 
 def owner_sources(owner: str, store: GroupStore | None, repo: str = "", commit: str = "") -> str:
     """The manager's "Your sources" section: what the owner connected for
-    themselves, how the tools over it behave, and where her own code is."""
+    themselves, how the tools over it behave, and where its own code is."""
     record = store.get(OWNER_ID) if store is not None else None
     sources = "; ".join(s.shown for s in record.sources) if record and record.sources else ""
     lines = [f"Connected for you: {sources}." if sources else "Nothing is connected for you yet."]
@@ -887,10 +887,10 @@ def owner_sources(owner: str, store: GroupStore | None, repo: str = "", commit: 
 
 
 def capability_map(owner: str, hosts: HostStore | None = None) -> str:
-    """What Fulla can do beyond the tool list in front of her, rendered from
-    the code and the machines she knows: her sub-agents, each machine's tools
-    whether or not it is on, the coding tools, and the hard limits. Her own
-    tools are in her list on every turn and are not named again here. Nothing
+    """What Fulla can do beyond the tool list in front of it, rendered from
+    the code and the machines it knows: its sub-agents, each machine's tools
+    whether or not it is on, the coding tools, and the hard limits. Its own
+    tools are in its list on every turn and are not named again here. Nothing
     in it is written by hand except the one-line purposes of sub-agents."""
     store = _hosts(hosts)
     known = store.all()

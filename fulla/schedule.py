@@ -1,15 +1,15 @@
-"""Fulla's schedule: her triggers in Norns, hers to make and move.
+"""Fulla's schedule: its triggers in Norns, Fulla's to make and move.
 
 A trigger is Norns's timer: a cron, a message, an agent and a conversation
 key. Fulla's used to be made by hand with `nornsctl` and re-made by hand when
 the messenger changed. Now the owner says when ("brief at 7", "check in every
 two hours on weekdays", "every Friday at 4 ask me about the week") and the
 manager's tools (`tools/schedule.py`) create, change and remove them with
-the Norns key she already holds. Nothing else does: no sync at start, nothing
+the Norns key it already holds. Nothing else does: no sync at start, nothing
 in CI. Triggers are Norns data, and `nornsctl triggers list` is always the
 truth.
 
-What is fixed in code, not an argument: a trigger of hers starts the manager
+What is fixed in code, not an argument: a trigger of Fulla's starts the manager
 in the standing conversation (`config.conversation_key`), since that is the
 one conversation the channel relays. Times are the owner's: the tool takes
 local times and days and this module builds the UTC cron Norns wants with

@@ -1,6 +1,6 @@
 """Feedback: what the owner said Fulla could have done better.
 
-Not a directive (she can't always act on it) and not a fact (it's about her,
+Not a directive (Fulla can't always act on it) and not a fact (it's about Fulla,
 not the world). A note for the humans: periodically the list is read and each
 item becomes a prompt change, a new tool, a standing instruction, or a
 won't-do, and is marked resolved with that outcome. The owner resolves one

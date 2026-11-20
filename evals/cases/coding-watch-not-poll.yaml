@@ -1,8 +1,8 @@
 why: >
   A running coding job is watched by the small watcher, not polled by the
   manager. The manager set a follow-up every five minutes for each job, and
-  each one was a full turn of hers to see "still running": about half of all
-  her tokens on 2026-11-16.
+  each one was a full turn of Fulla's to see "still running": about half of all
+  its tokens on 2026-11-16.
 connected: [bubbo]
 messages:
   - user: "in nornscode/bubbo, let the coding agent push changes to existing PRs if asked"

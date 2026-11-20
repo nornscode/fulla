@@ -65,7 +65,7 @@ WITHHELD = {
 WITHHELD_ON_SCHEDULED = {MANAGER_AGENT: frozenset({"ask_human"})}
 
 # The scheduled turns that are never delivered: they look after memory and
-# her own code, and end "[silent]". A mid-turn `send_message` would reach the
+# its own code, and end "[silent]". A mid-turn `send_message` would reach the
 # owner past that, so on these it is not offered. The other scheduled turns
 # (the brief, a check-in, a question, a follow-up, the owner's own timers)
 # are meant to reach the owner when they have something to say, and keep it.

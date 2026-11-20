@@ -1,4 +1,4 @@
-"""The channel: where the messengers (Telegram, Signal) and Norns meet. Fulla herself never sees it.
+"""The channel: where the messengers (Telegram, Signal) and Norns meet. Fulla itself never sees it.
 
 Addresses. The owner may reach Fulla on more than one messenger, so the
 channel speaks of addresses, not chats: `telegram:<chat id>`,
@@ -114,7 +114,7 @@ HELD = "I'll pass that on after you answer my question."
 HELD_ON = "I'll pass that on after you answer:"
 
 UNATTENDED = "Nobody can answer questions here. Finish now with what you have."
-TIMER_STARTED = "schedule"  # Norns's trigger_type for a run one of her timers started
+TIMER_STARTED = "schedule"  # Norns's trigger_type for a run one of its timers started
 
 # While a run of the owner's is in flight, a message that is nothing but one
 # of these cancels it, on either messenger; so does one of these reactions
@@ -152,7 +152,7 @@ CAPPED = "I'm done here for today."
 SOCIAL_KEY = "social:"  # conversation keys of friends' chats and groups: social:<address>
 # How a group agent's own check-back comes back to it (tools/group_reminders.py).
 FOLLOWUP_MARK = "[scheduled] follow-up you set:"
-# How a group message addresses Fulla: her name up front, or a reply to her.
+# How a group message addresses Fulla: its name up front, or a reply to it.
 ADDRESSED_RE = re.compile(r"^\W*fulla\b", re.IGNORECASE)
 # A group's recent messages are kept to give the social agent the thread when
 # it is addressed; older than this they are stale and left out, and a long
@@ -364,7 +364,7 @@ class Channel:
         number). Friends and groups get `social_agent`, at most `social_cap`
         answers a day per conversation. `confirm_kinds` are the kinds of
         confirm card `propose` may post. A message addressing Fulla in a group
-        carries the `group_context` messages before it, so she knows what
+        carries the `group_context` messages before it, so Fulla knows what
         "us" and "that" mean; 0 turns that off."""
         if primary not in transports or primary not in owners:
             raise ValueError(f"primary transport {primary!r} is not configured")
@@ -555,7 +555,7 @@ class Channel:
                 # apart and tags the right one.
                 self.people.saw_in_group(address, transport, inbound.user_id, inbound.sender_name)  # pyright: ignore[reportOptionalMemberAccess]
                 self._sync_groups()
-            # And what they said is the thread she reads when addressed.
+            # And what they said is the thread it reads when addressed.
             self._remember_in_group(address, self._label(owner, person, inbound), self._name_me(address, inbound.text),
                                     ref(address, inbound.message_id))
         if inbound.kind != "text" or not self._addressed(inbound, address):
@@ -572,7 +572,7 @@ class Channel:
         return ("social", person.name)
 
     def _addressed(self, inbound: Inbound, address: str) -> bool:
-        """In a group, Fulla answers when named up front, mentioned by her
+        """In a group, Fulla answers when named up front, mentioned by its
         bot handle, or replied to."""
         text = inbound.text or ""
         if ADDRESSED_RE.match(text):
@@ -706,9 +706,9 @@ class Channel:
 
     def _name_me(self, address: str, text: str) -> str:
         """A mention arrives as a number or account id. Fulla does not know
-        which are hers, and took a mention of her own number for someone else's
+        which are Fulla's, and took a mention of its own number for someone else's
         conversation; and a bare account id says nothing about who was meant.
-        Name her, and name everyone on the owner's list the same way."""
+        Name it, and name everyone on the owner's list the same way."""
         text = text.strip()
         me = str(getattr(self._transport(address), "number", "") or "")
         if me:
@@ -728,7 +728,7 @@ class Channel:
         return (person.name if person else "") or inbound.sender_name or str(inbound.user_id)
 
     def _remember_in_group(self, address: str, who: str, text: str, r: str | None = None) -> None:
-        """Keep a group's last few messages, hers included, as the thread an
+        """Keep a group's last few messages, Fulla's included, as the thread an
         addressed message is read against. Only allowed groups get here."""
         if not self.group_context or not text:
             return
@@ -1146,7 +1146,7 @@ class Channel:
         owner's own chat: the social conversation Norns holds for it, a run in
         flight there, what is queued behind it, and the group's thread. The
         people list, their reminders and the day's count stay. For when a
-        wrong answer of hers there has become the context, since no prompt
+        wrong answer of Fulla's there has become the context, since no prompt
         line argues a model out of its own history."""
         if self.people is None:
             self._send(address, "Nobody else talks to me, so there is nothing to reset.")
@@ -1652,7 +1652,7 @@ class Channel:
 
     def _ours(self, run_id: int, agent_id: int | None, conversation_id: int | None) -> bool:
         """A manager run in the owner's standing conversation, a reminder run
-        Fulla scheduled, or a Mac task she queued. Everything else on the
+        Fulla scheduled, or a Mac task it queued. Everything else on the
         tenant is somebody else's."""
         ids = self._our_agent_ids()
         if agent_id == ids.get(self.reminder_agent):
