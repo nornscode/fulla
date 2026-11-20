@@ -1,0 +1,18 @@
+why: >
+  A code change goes to a Bubbo sandbox, and the coding agent there finds its
+  own way around the repository. The manager searched GitHub and then grepped
+  the owner's whole home directory on the Mac for the code, which timed out
+  and failed the run (run 1080, 2026-11-16).
+connected: [mac, bubbo]
+messages:
+  - user: "in nornscode/bubbo, let the coding agent push changes to existing PRs if asked"
+checks:
+  - first_call: provision_environment
+    args:
+      repo: "(?i)^nornscode/bubbo$"
+  - not_called: github_search
+  - not_called: github_file
+  - not_called: mac_grep
+  - not_called: mac_glob
+  - not_called: mac_read_file
+  - not_called: mac_exec

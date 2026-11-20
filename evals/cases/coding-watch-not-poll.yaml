@@ -1,0 +1,25 @@
+why: >
+  A running coding job is watched by the small watcher, not polled by the
+  manager. The manager set a follow-up every five minutes for each job, and
+  each one was a full turn of hers to see "still running": about half of all
+  her tokens on 2026-11-16.
+connected: [bubbo]
+messages:
+  - user: "in nornscode/bubbo, let the coding agent push changes to existing PRs if asked"
+  - assistant: "On it: a sandbox is starting on nornscode/bubbo."
+    calls:
+      - name: provision_environment
+        args: {repo: nornscode/bubbo}
+      - name: watch_environment
+        args: {what: "env_1 is up: start the coding agent on pushing to existing PRs", environment_id: env_1}
+  - tool: '{"environment_id": "env_1", "state": "provisioning"}'
+  - tool: "Watching (run 102): env_1 is up: start the coding agent on pushing to existing PRs"
+  - user: "[scheduled] follow-up: env_1 is up: start the coding agent on pushing to existing PRs\n(watched: env_1 is ready)"
+stubs:
+  start_coding_agent: '{"job_id": "job_7", "environment_id": "env_1", "state": "queued"}'
+checks:
+  - called: start_coding_agent
+  - called: watch_environment
+    args:
+      job_id: "."
+  - not_called: schedule_followup

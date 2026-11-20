@@ -1,0 +1,25 @@
+why: >
+  A scheduled turn is offered only its own tools: the nightly review holds
+  nine, not the hundred the manager has. It must still do its work with them
+  (store what the day taught, look at the gaps) and end silent, and must not
+  take the short list for a missing capability or a machine that is off.
+now: "2026-10-20T00:00:00"
+connected: [mac]
+messages:
+  - user: "my friend Priya's birthday is June 9th, she'd love a card"
+  - assistant: "Noted, Priya's on June 9th."
+  - user: "[scheduled] nightly review"
+stubs:
+  recall: "No facts match."
+  remember: "Stored #21."
+  show_soul: "I'm Fulla. I keep it short."
+  list_gaps: "No gaps."
+checks:
+  - called: recall
+  - called: remember
+    args:
+      fact: "(?i)priya"
+  - called: list_gaps
+  - not_called: note_gap
+  - not_called: note_feedback
+  - reply: "^\\s*\\[silent\\]\\s*$"

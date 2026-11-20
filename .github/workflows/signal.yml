@@ -1,0 +1,30 @@
+# Deploy the Signal machine (deploy/signal/) when its files change on main.
+# It is a separate Fly app, so it needs its own deploy token:
+# `fly tokens create deploy -a fulla-signal` as the FLY_API_TOKEN_SIGNAL
+# repository secret. Skipped until one exists.
+name: signal
+
+on:
+  push:
+    branches: [main]
+    paths: ['deploy/signal/**']
+
+concurrency:
+  group: deploy-fulla-signal
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN_SIGNAL }}
+    steps:
+      - uses: actions/checkout@v7
+      - name: Skip until FLY_API_TOKEN_SIGNAL is set
+        if: env.FLY_API_TOKEN == ''
+        run: echo "No FLY_API_TOKEN_SIGNAL secret; not deploying." >> "$GITHUB_STEP_SUMMARY"
+      - uses: superfly/flyctl-actions/setup-flyctl@ed8efb33836e8b2096c7fd3ba1c8afe303ebbff1  # 1.6
+        if: env.FLY_API_TOKEN != ''
+      - run: flyctl deploy -c fly.toml --ha=false --remote-only
+        if: env.FLY_API_TOKEN != ''
+        working-directory: deploy/signal

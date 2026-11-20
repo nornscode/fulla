@@ -1,0 +1,32 @@
+# Fulla's Signal account, as one always-on machine beside the Fulla app.
+# No public service: Fulla reaches it at http://fulla-signal.internal:8080.
+# json-rpc mode keeps one signal-cli daemon alive, which is what receiving
+# in real time needs; the JVM wants about 1GB.
+app = 'fulla-signal'
+primary_region = 'yyz'
+
+[build]
+  dockerfile = 'Dockerfile'
+
+# Secrets (`fly secrets set -a fulla-signal`): SIGNAL_NUMBER (Fulla's, E.164)
+# and FULLA_SIGNAL_SECRET (from `fulla-signal-secret`). The forwarder idles
+# until both are set.
+[env]
+  MODE = 'json-rpc'
+  DEFAULT_SIGNAL_TEXT_MODE = 'styled'
+  FULLA_URL = 'https://fulla.fly.dev'
+
+[mounts]
+  source = 'fulla_signal'
+  destination = '/home/.local/share/signal-cli'
+
+# Fly's default gives up on a machine after ten crashes and leaves it
+# stopped, silently. This one has no public service to trip an alert, so
+# never give up; .github/workflows/signal-watch.yml is the alarm.
+[[restart]]
+  policy = 'always'
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1

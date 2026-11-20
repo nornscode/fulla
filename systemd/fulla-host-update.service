@@ -1,0 +1,12 @@
+# Pull main and restart the host worker when it changed. Run by the timer;
+# `uv run fulla-host install` enables both. By hand:
+#   sed "s|REPO|$PWD|g" systemd/fulla-host-update.service > ~/.config/systemd/user/fulla-host-update.service
+#   cp systemd/fulla-host-update.timer ~/.config/systemd/user/
+#   systemctl --user daemon-reload && systemctl --user enable --now fulla-host-update.timer
+[Unit]
+Description=Update Fulla's host worker
+
+[Service]
+Type=oneshot
+WorkingDirectory=REPO
+ExecStart=/bin/sh REPO/systemd/host-update.sh

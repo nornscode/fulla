@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Fulla's Mac worker, kept alive by launchd. It runs on Fulla's own Python
+     (launchd/mac-python.sh builds it), never through uv, so the macOS
+     permissions granted to that binary reach nothing else. `uv run fulla-mac
+     install` fills this in (REPO, FULLA_HOME, ENV_FILE) and loads it; by hand:
+       sh launchd/mac-python.sh
+       sed "s|REPO|$PWD|g; s|FULLA_HOME|$HOME/Library/Application Support/Fulla|g; s|ENV_FILE|$HOME/.config/fulla/mac.env|g" launchd/com.fulla.mac.plist > ~/Library/LaunchAgents/com.fulla.mac.plist
+       launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.fulla.mac.plist
+     Secrets live in ENV_FILE, not here. -->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.fulla.mac</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>FULLA_HOME/venv/bin/python</string>
+    <string>-m</string>
+    <string>fulla.mac</string>
+    <string>--env-file</string>
+    <string>ENV_FILE</string>
+  </array>
+  <key>WorkingDirectory</key>
+  <string>REPO</string>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
+  <true/>
+  <key>ThrottleInterval</key>
+  <integer>10</integer>
+  <key>StandardOutPath</key>
+  <string>/tmp/fulla-mac.log</string>
+  <key>StandardErrorPath</key>
+  <string>/tmp/fulla-mac.log</string>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key>
+    <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
+  </dict>
+</dict>
+</plist>

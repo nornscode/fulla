@@ -1,0 +1,24 @@
+why: >
+  The scheduled turns were triggers made by hand with nornsctl, so "move the
+  brief to 7:30" could only be noted as a gap. Now the manager holds
+  `set_trigger`: the owner's ask sets the turn by its fixed name, with the time
+  as said (the tool converts the zone), and nothing is noted as a gap.
+messages:
+  - user: "can you move the morning brief to 7:30?"
+stubs:
+  list_triggers: |
+    morning-brief: every day at 08:00
+        says: [scheduled] morning brief (a scheduled turn of yours)
+    check-in: every day at 09:00, 11:00, 13:00, 15:00, 17:00, 19:00
+        says: [scheduled] check-in (a scheduled turn of yours)
+  set_trigger: "Changed morning-brief: every day at 07:30; says: [scheduled] morning brief"
+checks:
+  - called: set_trigger
+    args:
+      name: "^morning-brief$"
+      times: "7:30|07:30"
+  - not_called: set_trigger
+    args:
+      times: "11:30"
+  - not_called: note_gap
+  - not_called: schedule_reminder

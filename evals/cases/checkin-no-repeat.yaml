@@ -1,0 +1,29 @@
+why: >
+  The check-in raised Jamie's "Yup" three days running (Oct 26, 27, 28), and
+  the brief listed the same overdue to-dos every morning. The owner reads
+  these in a batch and never answered any of them. Said once and let pass is
+  a no: the next check-in leaves it out.
+now: "2026-10-28T11:00:00"
+connected: [mac]
+messages:
+  - user: "[scheduled] check-in"
+  - assistant: "Jamie Park texted \"Yup\" 3 days ago and you haven't replied — might be worth closing that loop."
+  - user: "[scheduled] nightly review"
+  - assistant: "[silent]"
+  - user: "[scheduled] check-in"
+stubs:
+  calendar: |
+    Wed Oct 28 (today)
+      09:30-10:30  Busy  [Work]
+      14:00-15:00  Busy  [Work]
+  recall: |
+    #1 Robin wants to be encouraged to take a walk and drink water, regularly but not on a fixed schedule.
+  mac_imessage_unanswered: |
+    Jamie Park, 4 days: "Yup"
+  mac_things_list: |
+    Return the library books (scheduled 2026-10-24)
+    Fix the bike light [Home] (scheduled 2026-10-24)
+checks:
+  - not_reply: "(?i)jamie"
+  - not_reply: "(?i)library books|bike light"
+  - not_called: ask_human

@@ -1,0 +1,28 @@
+why: >
+  When the owner said what a machine is for, a plain reference resolves to it:
+  "the dev server" is box, so the command goes to box_exec and not to the Mac,
+  and the reply names the machine, since more than one is connected.
+connected: [mac, box]
+known:
+  mac: []
+  box: []
+purposes:
+  box: my dev server; the widgets checkout is in ~/widgets and its tests run with `make test`
+  mac: my laptop
+messages:
+  - user: "run the widgets tests on the dev server"
+stubs:
+  box_exec: |
+    exit 0 (4.2s, in ~/widgets on box)
+    --- stdout
+    pytest -q
+    ..........
+    10 passed in 3.9s
+checks:
+  - called: box_exec
+  - not_called: mac_exec
+  - not_called: mac_tmux_send
+  - judge: >
+      Did the manager run the tests on box (box_exec), never on the Mac, with
+      at most a couple of calls, and does the final reply exist, say the ten
+      tests passed, and name the machine it ran on (the box or the dev server)?

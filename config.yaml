@@ -1,0 +1,110 @@
+channel:
+  # Fulla listens on every messenger configured below (telegram, signal,
+  # sms) and answers where she was spoken to. The primary one gets what has
+  # no origin: the morning brief, reminders, anything scheduled. The
+  # standing conversation is keyed by it, so changing it starts the chat over.
+  primary: ${FULLA_CHANNEL:-telegram}
+  # How many messages a day Fulla answers in any one friends' chat or group
+  # (people.json, allowed by the owner from chat). Other people can run up
+  # the bill; this is the ceiling per conversation.
+  social_daily_cap: ${FULLA_SOCIAL_DAILY_CAP:-50}
+  # When addressed in a group, Fulla reads the messages before it, this many
+  # at most and none older than two hours, so "us" and "that" mean something.
+  # They reach her as untrusted text. 0 gives her the addressed message alone.
+  group_context: ${FULLA_GROUP_CONTEXT:-8}
+
+signal:
+  # The signal-cli machine (deploy/signal/), over Fly's private network.
+  api_url: ${FULLA_SIGNAL_URL:-http://fulla-signal.internal:8080}
+  # Fulla's own number, registered there, E.164.
+  number: ${FULLA_SIGNAL_NUMBER:-}
+  # Who may talk to her: the owner's number, their Signal account id, or
+  # both, comma-separated. Everyone else is dropped.
+  owner: ${FULLA_SIGNAL_OWNER:-}
+
+sms:
+  # Text messages through Twilio. The number is Fulla's (it can be the one
+  # Signal is registered on), the owner's is the only one she reads. All
+  # four or none; the auth token also signs Twilio's webhook.
+  account_sid: ${TWILIO_ACCOUNT_SID:-}
+  auth_token: ${TWILIO_AUTH_TOKEN:-}
+  number: ${FULLA_SMS_NUMBER:-}
+  owner: ${FULLA_SMS_OWNER:-}
+
+telegram:
+  # Only the channel process needs these. The worker runs without them.
+  bot_token: ${FULLA_TELEGRAM_BOT_TOKEN:-}
+  # Numeric Telegram user id. Only this sender is honoured; everyone else is dropped.
+  user_id: ${FULLA_TELEGRAM_USER_ID:-0}
+
+norns:
+  runtime_url: ${NORNS_URL:-http://localhost:4001}
+  api_key: ${NORNS_API_KEY}
+
+fulla:
+  owner_name: ${FULLA_OWNER_NAME:-the owner}
+  timezone: ${FULLA_TIMEZONE:-America/Toronto}
+  # facts.json and the channel's bookkeeping live here. Mount a volume in prod.
+  data_dir: ${FULLA_DATA_DIR:-./data}
+  # The manager's model: the owner's own turns. Agents with a narrower job run
+  # smaller: `mid_model` reads the web and talks in groups, `light_model`
+  # carries the timers (reminders, follow-ups, the sandbox watcher).
+  model: ${FULLA_MODEL:-claude-opus-5-5}
+  mid_model: ${FULLA_MID_MODEL:-claude-sonnet-5-5}
+  light_model: ${FULLA_LIGHT_MODEL:-claude-haiku-5-5}
+  # Read-only iCal feeds, "Name=url,Other=url". Google: calendar settings,
+  # "Secret address in iCal format". Leave empty for no calendar.
+  calendars: ${FULLA_CALENDARS:-}
+  # The Fly app's public URL. Only machine workers (`fulla-mac`, `fulla-host`)
+  # read it: they announce themselves there, which is how Fulla learns a machine exists.
+  url: ${FULLA_URL:-}
+  # Brave Search API key, for the reader's `web_search`. Empty: search is off;
+  # reading a page someone links still works.
+  brave_api_key: ${BRAVE_API_KEY:-}
+  # Encrypts each group's credentials at rest (data/groups/<id>/credentials.json).
+  # Any long random string; a Fly secret in production. Empty: no credential can
+  # be stored, and `set_group_credential` says so. Changing it orphans what was stored.
+  secret: ${FULLA_SECRET:-}
+  # A GitHub App of your own, in place of a GitHub token per group: its app id
+  # and its private key (the PEM file's text; newlines may be written as \n, or
+  # the whole file base64-encoded). Install the app on the repositories you
+  # connect. Fulla mints an hour-long token for one repository at a time, only
+  # for a repository among that group's sources. Both empty: stored tokens are used.
+  github_app_id: ${FULLA_GITHUB_APP_ID:-}
+  github_app_key: ${FULLA_GITHUB_APP_KEY:-}
+  # Fulla's own repository, owner/name. Connect it to "me" with a token and she
+  # reads her own code: what changed, whether a gap has shipped. Empty: she is not told.
+  repo: ${FULLA_REPO:-nornscode/fulla}
+  # The commit she is running, set by the Dockerfile from CI's build arg. Empty: unknown.
+  commit: ${FULLA_COMMIT:-}
+
+mac:
+  # Read only by the Mac worker (`fulla-mac`). Apps `mac_applescript` may address;
+  # every other app is refused, as is `do shell script`.
+  applescript_apps: ${FULLA_MAC_APPS:-Things3,Reminders,Notes,Calendar}
+  # Who Fulla may iMessage, "Name=+16475550100,Other=them@icloud.com". Empty: sending is off.
+  imessage_allow: ${FULLA_IMESSAGE_ALLOW:-}
+  # The Reminders list `mac_reminders_create` uses when none is named.
+  reminders_list: ${FULLA_REMINDERS_LIST:-Reminders}
+  # tmux sessions Fulla may read and type into, by name; "*" for all. Empty: off.
+  tmux_sessions: ${FULLA_TMUX_SESSIONS:-}
+  # FULLA_SHELL=1 turns on `mac_exec` and the file tools: commands and files on the Mac,
+  # as the worker's own user. Empty: off, and the tools refuse.
+  shell: ${FULLA_SHELL:-}
+  # This machine's own id, written by `fulla-mac install`; its name stays with it.
+  machine_id: ${FULLA_MACHINE_ID:-}
+
+  # The Shortcuts folder holding the home automations Fulla may run (`mac_home_run`).
+  # Shortcuts anywhere else are out of reach.
+  home_folder: ${FULLA_MAC_HOME_FOLDER:-Fulla Home}
+
+host:
+  # Read only by the host worker (`fulla-host`) on a machine that is not the Mac.
+  # Its tools are served as `<name>_tmux_*`, and it announces itself to fulla.url.
+  name: ${FULLA_HOST:-}
+  tmux_sessions: ${FULLA_TMUX_SESSIONS:-}
+  # FULLA_SHELL=1 turns on `<name>_exec` and the file tools, as the worker's own user.
+  shell: ${FULLA_SHELL:-}
+  # This machine's own id, written by `fulla-host install`; its name stays with it,
+  # and another machine announcing the same name is refused.
+  machine_id: ${FULLA_MACHINE_ID:-}

@@ -1,0 +1,23 @@
+why: >
+  With a soul that calls the owner "chief", every reply came out as "Got it,
+  chief, you meant the server restart. I've already..." : a pet name and an
+  acknowledgement up front, then the owner's own words read back. She should
+  start with the point and use the nickname now and then, not as an opener.
+soul: |
+  I'm Fulla, Robin's personal manager. I call them "chief" — also boss,
+  captain, pal, mixing it up.
+
+  I'm blunt and brief — simple over detailed, short over long.
+messages:
+  - user: "remind me to call the dentist tomorrow at 10"
+stubs:
+  schedule_reminder: "Reminder set for 2026-10-20 10:00: call the dentist"
+checks:
+  - called: schedule_reminder
+  - not_reply: "(?i)^\\W*(got it|sure|understood|on it|noted|okay|ok|alright|will do|set)\\b"
+  - not_reply: "(?i)^\\W*(\\w+\\W+){0,2}(chief|boss|captain|pal)\\b"
+  - judge: >
+      Does the reply read like a natural text from a friend, leading with the
+      outcome (stating the reminder and its time is fine), with no
+      acknowledgement opener ("Got it", "Sure", "Set") and no nickname in its
+      opening words?

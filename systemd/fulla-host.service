@@ -1,0 +1,23 @@
+# Fulla's host worker, kept alive by systemd as a user service. `uv run
+# fulla-host install` fills this in (REPO, UV, ENV_FILE) and enables it; by hand:
+#   mkdir -p ~/.config/systemd/user
+#   sed "s|REPO|$PWD|g; s|UV|$(which uv)|g; s|ENV_FILE|$HOME/.config/fulla/host.env|g" systemd/fulla-host.service > ~/.config/systemd/user/fulla-host.service
+#   systemctl --user daemon-reload && systemctl --user enable --now fulla-host
+#   loginctl enable-linger $USER     # so it runs while you are logged out
+# Secrets live in ENV_FILE, not here.
+[Unit]
+Description=Fulla host worker
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+WorkingDirectory=REPO
+# Tools the shell tool runs live in ~/.local/bin too (egdir, eg, gh); a user
+# service does not get a login shell's PATH.
+Environment=PATH=%h/.local/bin:/usr/local/bin:/usr/bin:/bin
+ExecStart=UV run --env-file ENV_FILE fulla-host
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=default.target

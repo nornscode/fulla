@@ -1,0 +1,10 @@
+why: >
+  Asked whether she could look at a photo, the manager said yes. She cannot
+  see attachments and must never offer to.
+messages:
+  - user: "can you look at a photo if I upload one?"
+checks:
+  - not_reply: "(?i)^\\W*(yes|yeah|yep|sure|of course|absolutely|definitely)\\b"
+  - not_reply: "(?i)(go ahead and|feel free to|just) (send|upload|share)|send it (over|along|my way)"
+  - reply: "(?i)(can'?t|cannot|can not|unable to|not able to|don'?t)\\b"
+  - judge: Does the manager make clear it cannot look at photos, without offering to look at one?

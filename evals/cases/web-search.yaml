@@ -1,0 +1,11 @@
+why: >
+  The manager cannot read the web; the reader does. A question that needs the
+  web goes to `launch_agent` with fulla-reader, never answered as if she had
+  looked it up herself, and never refused.
+messages:
+  - user: "what's the latest news on the Artemis III launch date?"
+checks:
+  - called: launch_agent
+    args:
+      agent_name: "^fulla-reader$"
+      message: "(?i)artemis"

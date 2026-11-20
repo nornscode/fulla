@@ -1,0 +1,10 @@
+why: >
+  A page the owner links is read by the reader, with the URL in its message;
+  the manager never claims to have opened it.
+messages:
+  - user: "what does https://github.com/nornscode/norns say norns is for? one line"
+checks:
+  - first_call: launch_agent
+    args:
+      agent_name: "^fulla-reader$"
+      message: "github\\.com/nornscode/norns"

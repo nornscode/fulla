@@ -1,0 +1,30 @@
+why: >
+  A finished coding job is reported in a sentence or two. The manager sent a
+  bulleted wall with test counts, file counts and a "one catch" section for
+  each job (2026-11-16).
+connected: [bubbo]
+messages:
+  - user: "in nornscode/bubbo, let the coding agent push changes to existing PRs if asked"
+  - assistant: "On it: a sandbox is starting on nornscode/bubbo."
+    calls:
+      - name: provision_environment
+        args: {repo: nornscode/bubbo}
+      - name: schedule_followup
+        args: {what: "env_1: start the coding agent on pushing to existing PRs", due_at: "2026-10-19T09:02:00"}
+  - tool: '{"environment_id": "env_1", "state": "provisioning"}'
+  - tool: "Follow-up set (run 102)."
+  - user: "[scheduled] follow-up: job job_7 in env_1, pushing to existing PRs. Check it with get_coding_task and report when it is done."
+  - assistant: ""
+    calls:
+      - name: get_coding_task
+        args: {job_id: job_7}
+  - tool: |
+      {"state": "succeeded", "summary": "Added support for continuing any open pull request whose head branch is in the same repository. bubbo/github.py: new find_pull() replacing find_own_pull(), which refuses forks, closed PRs, and PRs whose head is the default or base branch. bubbo/service.py: provision_environment and open_pull_request re-check the PR right before pushing and never force-push; open_pull_request comments on the PR with the commit. bubbo/tools.py: pull_request description updated. tests/test_github.py, tests/test_service.py: 12 new tests. Ran `uv run pytest`: 70 passed. `uv run ruff check .`: clean. 8 files changed, 214 insertions(+), 37 deletions(-)."}
+checks:
+  - not_reply: "(?i)\\b\\d+ (tests?|files?)\\b"
+  - not_reply: "(?m)^\\s*[-•*] "
+  - not_reply: "(?i)insertions|deletions"
+  - judge: >
+      Is the report to the owner a sentence or two in plain words (what
+      changed, and asking whether they want a pull request), with no headings,
+      bullets, test counts, file counts or list of files?

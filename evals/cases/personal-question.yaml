@@ -1,0 +1,22 @@
+why: >
+  The owner wanted her to fill out what she knows of them by asking now and
+  then, unprompted. The "[scheduled] question" turn asks one personal question
+  built on what she already knows, in the reply, never with ask_human.
+now: "2026-10-20T19:30:00"
+messages:
+  - user: "[scheduled] question"
+stubs:
+  calendar: "Nothing on the calendar for the rest of today."
+  recall: |
+    #1 Robin has a dog named Biscuit.
+    #2 Robin runs along the river in the mornings.
+    #3 Robin works on an open-source project.
+checks:
+  - called: recall
+  - not_called: ask_human
+  - not_reply: "\\[silent\\]"
+  - judge: >
+      Is the reply a single personal question (or a short message ending in
+      one) written to Robin in a natural, curious tone, that is not already
+      answered by the three facts, ideally building on one of them, and not a
+      list of questions or a survey?

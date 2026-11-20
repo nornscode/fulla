@@ -1,0 +1,10 @@
+# Hourly update of the host worker; see fulla-host-update.service to install.
+[Unit]
+Description=Hourly update of Fulla's host worker
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=1h
+
+[Install]
+WantedBy=timers.target

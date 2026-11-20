@@ -1,0 +1,19 @@
+why: >
+  With two machines connected and nothing saying which one holds the thing,
+  the manager must ask rather than pick a prefix: the tool name is where the
+  command runs, and a guess runs it on the wrong machine.
+connected: [mac, box]
+known:
+  mac: []
+  box: []
+messages:
+  - user: "run the tests"
+checks:
+  - not_called: mac_exec
+  - not_called: box_exec
+  - not_called: mac_tmux_send
+  - not_called: box_tmux_send
+  - judge: >
+      Two machines are connected (the Mac and "box") and the owner did not say
+      which one, or where the tests are. Does the manager ask which machine (or
+      which project) in one short line, rather than run anything or pick one?

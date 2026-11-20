@@ -1,0 +1,87 @@
+# Lint and test every pull request and every push to main. A push to main
+# that passes is deployed to Fly from the committed tree, never from a
+# working copy. The deploy step needs a FLY_API_TOKEN repository secret
+# (`fly tokens create deploy -a fulla`) and is skipped until one exists.
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.3.0  # no moving major tag past v7
+        with:
+          enable-cache: true
+      - run: uv sync --frozen --extra dev
+      - run: uv run ruff check .
+      - run: uv run pyright
+      - run: uv run pytest -q
+
+  deploy:
+    needs: check
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: deploy-fulla
+      cancel-in-progress: false
+    env:
+      FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      # Job-level so every step's `if` can see them; a step-level env is
+      # invisible to another step's condition.
+      NORNS_URL: ${{ secrets.NORNS_URL }}
+      NORNS_API_KEY: ${{ secrets.NORNS_API_KEY }}
+    steps:
+      - uses: actions/checkout@v7
+      - name: Skip until FLY_API_TOKEN is set
+        if: env.FLY_API_TOKEN == ''
+        run: echo "No FLY_API_TOKEN secret; not deploying." >> "$GITHUB_STEP_SUMMARY"
+      - uses: superfly/flyctl-actions/setup-flyctl@ed8efb33836e8b2096c7fd3ba1c8afe303ebbff1  # 1.6
+        if: env.FLY_API_TOKEN != ''
+      - run: flyctl deploy --remote-only --build-arg FULLA_COMMIT=${{ github.sha }}
+        if: env.FLY_API_TOKEN != ''
+      # The worker pushes its agent definitions (prompt, allowlist) to Norns
+      # when it joins, and a serverless worker joins only when woken. Without
+      # this, a prompt change is live on the next tool call, not on deploy.
+      # Needs NORNS_URL and NORNS_API_KEY secrets; skipped until they exist.
+      # The serverless declaration is what Norns advertises while the worker
+      # is asleep; a tool added to an agent is not callable until it is
+      # re-declared. Idempotent: an existing declaration is updated in place
+      # and keeps its secret.
+      - uses: astral-sh/setup-uv@v10.3.0
+        if: env.FLY_API_TOKEN != '' && env.NORNS_API_KEY != ''
+      - name: Re-declare the serverless worker's tools
+        if: env.FLY_API_TOKEN != '' && env.NORNS_API_KEY != ''
+        env:
+          NORNS_URL: ${{ secrets.NORNS_URL }}
+          NORNS_API_KEY: ${{ secrets.NORNS_API_KEY }}
+          # The owner's name is in the agents' prompts; unset, it is "the owner".
+          FULLA_OWNER_NAME: ${{ secrets.FULLA_OWNER_NAME }}
+        run: |
+          export NORNS_URL=$(printf '%s' "$NORNS_URL" | tr -d '[:space:]' | sed 's|/*$||')
+          export NORNS_API_KEY=$(printf '%s' "$NORNS_API_KEY" | tr -d '[:space:]')
+          uv sync --frozen
+          uv run fulla-register --wake-url https://fulla.fly.dev/norns/wake
+      - name: Wake the worker so Norns gets the new agent definition
+        if: env.FLY_API_TOKEN != '' && env.NORNS_API_KEY != ''
+        env:
+          NORNS_URL: ${{ secrets.NORNS_URL }}
+          NORNS_API_KEY: ${{ secrets.NORNS_API_KEY }}
+        run: |
+          # Secrets pasted from a terminal carry a trailing newline; curl
+          # rejects a URL with one as malformed. Strip whitespace and any
+          # trailing slash from both.
+          url=$(printf '%s' "$NORNS_URL" | tr -d '[:space:]' | sed 's|/*$||')
+          key=$(printf '%s' "$NORNS_API_KEY" | tr -d '[:space:]')
+          id=$(curl -fsS -H "Authorization: Bearer $key" "$url/api/v1/serverless_workers" \
+            | jq -r '.data[] | select(.worker_id == "fulla") | .id')
+          test -n "$id"
+          curl -fsS -X POST -H "Authorization: Bearer $key" "$url/api/v1/serverless_workers/$id/wake"

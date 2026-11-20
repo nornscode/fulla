@@ -1,0 +1,36 @@
+why: >
+  Told "1 and 2 have been resolved", the manager filed feedback saying so and a
+  new gap, "I have no tool to close a gap" (2026-10-21), because she had none.
+  Now she has `resolve_gap`: the owner's word closes a gap, one call each, and
+  nothing new is filed about it.
+messages:
+  - user: "1 and 2 have been resolved, also we're on signal now so you can close 3 too"
+stubs:
+  list_gaps: |
+    #1 (2026-10-05, asked 2 times) missing: no way to set an iMessage reminder
+        asked: remind me over iMessage
+        proposed 2026-10-06, rung 1 (just do it: she had the tools and fumbled): schedule_reminder and draft_imessage cover it.
+    #2 (2026-10-07) missing: no web search
+        asked: look up the Artemis launch date
+        proposed 2026-10-08, rung 1 (just do it: she had the tools and fumbled): fulla-reader does this.
+    #3 (2026-10-09) missing: no Signal or WhatsApp channel
+        asked: can you be on Signal or WhatsApp
+        proposed 2026-10-10, rung 6 (a change to Fulla herself (or to Norns)): a second messenger in the channel.
+    #4 (2026-10-11) missing: no home-screen web app
+        asked: can I have you as a web app on my home screen
+  resolve_gap: "Gap closed."
+checks:
+  - called: resolve_gap
+    args:
+      gap: "^1$"
+  - called: resolve_gap
+    args:
+      gap: "^2$"
+  - called: resolve_gap
+    args:
+      gap: "^3$"
+  - not_called: resolve_gap
+    args:
+      gap: "^4$"
+  - not_called: note_gap
+  - not_called: note_feedback

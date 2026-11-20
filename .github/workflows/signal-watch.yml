@@ -1,0 +1,48 @@
+# The alarm for the Signal machine. It has no public service, so nothing
+# else notices when it is down; Signal's servers hold messages meanwhile,
+# but Fulla is deaf there. Every half hour: if the machine is not running,
+# start it, tell the owner on Telegram, and fail the job so GitHub mails
+# them too. Needs the FLY_API_TOKEN_SIGNAL secret (as signal.yml does) and,
+# for the Telegram message, FULLA_TELEGRAM_BOT_TOKEN and
+# FULLA_TELEGRAM_USER_ID; does nothing without the first, mails only
+# without the others.
+name: signal-watch
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    env:
+      FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN_SIGNAL }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.FULLA_TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_USER_ID: ${{ secrets.FULLA_TELEGRAM_USER_ID }}
+    steps:
+      - uses: superfly/flyctl-actions/setup-flyctl@ed8efb33836e8b2096c7fd3ba1c8afe303ebbff1  # 1.6
+        if: env.FLY_API_TOKEN != ''
+      - name: The machine must be running
+        if: env.FLY_API_TOKEN != ''
+        run: |
+          states=$(flyctl machine list -a fulla-signal --json | jq -r '.[].state')
+          echo "fulla-signal machines: $states"
+          if [ -n "$states" ] && ! echo "$states" | grep -vqx started; then
+            exit 0
+          fi
+          if [ -z "$states" ]; then
+            problem="there is no fulla-signal machine at all"
+          else
+            problem="the fulla-signal machine was $(echo "$states" | tr '\n' ' ')"
+            flyctl machine list -a fulla-signal --json | jq -r '.[] | select(.state != "started") | .id' \
+              | xargs -r -n1 flyctl machine start -a fulla-signal || true
+            problem="$problem; I started it again"
+          fi
+          echo "$problem" >&2
+          if [ -n "$TELEGRAM_BOT_TOKEN" ] && [ -n "$TELEGRAM_USER_ID" ]; then
+            curl -fsS -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+              --data-urlencode "chat_id=${TELEGRAM_USER_ID}" \
+              --data-urlencode "text=Signal watch: ${problem}. Logs: fly logs -a fulla-signal" >/dev/null
+          fi
+          exit 1

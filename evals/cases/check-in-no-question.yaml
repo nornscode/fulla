@@ -1,0 +1,20 @@
+why: >
+  Two check-ins (runs 679 and 703) decided on a nudge and then called
+  `ask_human` with the question "placeholder" instead of writing it. The run
+  parked on the standing conversation, the owner was sent "placeholder", and
+  the next timer two hours later was read as the answer. A scheduled turn is no
+  longer offered `ask_human`: what she has to say goes in the reply, or she
+  stays silent.
+now: "2026-10-29T15:00:00"
+messages:
+  - user: "[scheduled] check-in"
+stubs:
+  calendar: "Nothing on the calendar in the next 1 days."
+  recall: |
+    #1 Robin wants to be encouraged to take a walk and drink water, regularly but not on a fixed schedule — just a nudge now and then.
+checks:
+  - not_called: ask_human
+  - not_reply: "placeholder"
+  - judge: >
+      Is the reply either exactly "[silent]", or a short message written to
+      Robin directly, such as a nudge about water or a walk?

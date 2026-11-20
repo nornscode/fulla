@@ -1,0 +1,21 @@
+why: >
+  The owner said the slides were done many times over three weeks. The manager had
+  no tool to close a reminder, so it stored a fact and the morning brief kept
+  asking "Should I close it?" (2026-11-06). Now `drop_reminder` closes one on
+  the owner's word, and nothing is asked.
+messages:
+  - user: "the slides are done, I've told you this. stop asking about it"
+stubs:
+  list_reminders: |
+    run 220: Finish the slides before tomorrow's meeting at 2026-10-16T09:00-07:00 (waiting for your answer)
+    run 412: Call the dentist at 2026-10-21T09:00-07:00 (sleeping)
+  drop_reminder: "Closed: Finish the slides before tomorrow's meeting"
+checks:
+  - called: drop_reminder
+    args:
+      run_id: "^220$"
+  - not_called: drop_reminder
+    args:
+      run_id: "^412$"
+  - not_called: ask_human
+  - not_called: schedule_reminder

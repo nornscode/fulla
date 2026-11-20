@@ -1,0 +1,15 @@
+why: >
+  Told "11am PT" with home in Toronto, the manager converted the time herself
+  and scheduled 12:00 Eastern, which is 9am PT (run 220). The time goes in as
+  said, the zone as `tz`, and the tool converts.
+now: "2026-10-19T09:30:00"
+messages:
+  - user: "remind me at 11am PT tomorrow to call the bank"
+checks:
+  - called: schedule_reminder
+    args:
+      due_at: "^2026-10-20T11:00(:00)?(-07:00)?$"
+      tz: "^(America/(Los_Angeles|Vancouver|Tijuana)|US/Pacific|PST8PDT)$"
+  - not_called: schedule_reminder
+    args:
+      due_at: "T14:00"

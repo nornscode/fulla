@@ -1,0 +1,25 @@
+why: >
+  A reminder whose run Norns no longer has is listed once as LOST and then
+  forgotten. One still to come must reach the owner, since it will never fire.
+  One long past that the owner said is done must not: "Finish the slides" was in
+  the brief every morning for three weeks (2026-11-06).
+now: "2026-10-19T07:30:00"
+messages:
+  - user: "[scheduled] morning brief"
+stubs:
+  calendar: |
+    Mon Oct 19 (today)
+      10:00-11:00  Planning  [Work]
+    Tue Oct 20 (tomorrow)
+      Nothing booked.
+  recall: |
+    #15 The slides were finished and presented on Friday 2026-10-16.
+  list_reminders: |
+    run 220: Finish the slides before tomorrow's meeting at 2026-10-16T09:00-07:00 (LOST: Norns no longer has this run, so it will never ask; it is off the list after this)
+    run 301: Call the dentist at 2026-10-20T09:00-07:00 (LOST: Norns no longer has this run, so it will never ask; it is off the list after this)
+  list_gaps: "No gaps."
+checks:
+  - reply: "(?i)dentist"
+  - not_reply: "(?i)slides"
+  - not_called: ask_human
+  - not_called: drop_reminder

@@ -1,0 +1,28 @@
+why: >
+  Claude Code dims the placeholder in its input box. Before it was marked, the
+  manager read it as text typed and not sent. Now it arrives wrapped in «…»,
+  and she must not report it as input waiting in the box.
+connected: [mac]
+known:
+  mac: [work]
+messages:
+  - user: "what's claude doing in my work session?"
+  - assistant: ""
+    calls:
+      - name: mac_tmux_read
+        args: {target: work}
+  - tool: |
+      ⏺ All 214 tests pass. I've pushed the branch and opened the PR:
+        https://github.com/nornscode/fulla/pull/32
+
+      ╭──────────────────────────────────────────────────────────────╮
+      │ > «Try "write a test for evals.py"»                          │
+      ╰──────────────────────────────────────────────────────────────╯
+        «? for shortcuts»
+checks:
+  - not_called: mac_tmux_send
+  - judge: >
+      The text in «…» is a dimmed placeholder, not something typed. Does the
+      manager avoid saying or implying that "write a test for evals.py" (or
+      anything else) has been typed into the input box, drafted, or is waiting
+      to be sent?

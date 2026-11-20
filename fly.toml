@@ -1,0 +1,37 @@
+# One app, asleep between requests. Norns wakes the worker half with a
+# signed POST to /norns/wake and tells the channel half about run state
+# changes at /norns/events; Telegram POSTs messages to /telegram. Fly starts
+# the machine for a request and stops it a few minutes after the last one
+# closes; a wake stays open while the worker serves.
+app = 'fulla'
+primary_region = 'yyz'
+
+[build]
+
+[env]
+  NORNS_URL = 'http://norns-runtime.internal:4000'
+  FULLA_DATA_DIR = '/data'
+  NORNS_WORKER_ID = 'fulla'
+  PORT = '9000'
+  WAKE_IDLE = '60'
+  WAKE_MAX_LIFETIME = '900'
+
+[processes]
+  app = 'fulla-serve'
+
+[http_service]
+  internal_port = 9000
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[mounts]
+  source = 'fulla_data'
+  destination = '/data'
+
+[[vm]]
+  memory = '512mb'
+  cpu_kind = 'shared'
+  cpus = 1

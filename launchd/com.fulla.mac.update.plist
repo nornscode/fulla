@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Pulls origin/main into the Mac worker's checkout every hour and restarts
+     the worker when it changed. `uv run fulla-mac install` loads it with
+     com.fulla.mac.plist; by hand:
+       sed "s|REPO|$PWD|g" launchd/com.fulla.mac.update.plist > ~/Library/LaunchAgents/com.fulla.mac.update.plist
+       launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.fulla.mac.update.plist -->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.fulla.mac.update</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/sh</string>
+    <string>REPO/launchd/mac-update.sh</string>
+  </array>
+  <key>StartInterval</key>
+  <integer>3600</integer>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>StandardOutPath</key>
+  <string>/tmp/fulla-mac-update.log</string>
+  <key>StandardErrorPath</key>
+  <string>/tmp/fulla-mac-update.log</string>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key>
+    <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
+  </dict>
+</dict>
+</plist>

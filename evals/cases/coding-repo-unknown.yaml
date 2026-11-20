@@ -1,0 +1,16 @@
+why: >
+  Bubbo's enabled list is a wildcard, so it names no repository. With nothing
+  saying which repository holds the code, the manager must ask rather than
+  provision a guess; it guessed nornscode/bubbo (2026-11-16).
+connected: [mac, bubbo]
+messages:
+  - user: "let's add a feature to the scheduler so a job can be paused"
+checks:
+  - not_called: provision_environment
+  - not_called: mac_grep
+  - not_called: mac_exec
+  - judge: >
+      The owner asked for a code change without naming the repository, and
+      nothing in the prompt says which one holds the scheduler. Does the
+      manager ask which repository in one short line, without starting
+      anything or exploring the owner's machine for it?
