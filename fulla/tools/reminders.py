@@ -57,7 +57,7 @@ def _save(index: dict[str, dict]):
 
 def known(run_id: int) -> bool:
     """Whether Fulla scheduled this run. The channel relays reminder runs only
-    if she did; a run of the reminder agent started some other way is not hers."""
+    if it did; a run of the reminder agent started some other way is not Fulla's."""
     return str(run_id) in _load()
 
 

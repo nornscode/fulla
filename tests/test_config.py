@@ -80,7 +80,7 @@ def test_repo_and_commit(monkeypatch):
     monkeypatch.setenv("FULLA_COMMIT", "")
     cfg = load_config()
     assert cfg.fulla.repo == "nornscode/fulla" and cfg.fulla.commit == ""
-    monkeypatch.setenv("FULLA_REPO", " other/her ")
+    monkeypatch.setenv("FULLA_REPO", " other/repo ")
     monkeypatch.setenv("FULLA_COMMIT", "abc1234def")
     cfg = load_config()
-    assert cfg.fulla.repo == "other/her" and cfg.fulla.commit == "abc1234def"
+    assert cfg.fulla.repo == "other/repo" and cfg.fulla.commit == "abc1234def"

@@ -1,7 +1,7 @@
 """Standing instructions: how the owner wants Fulla to behave, from now on.
 
 A fact is something the owner told Fulla about the world. A directive is
-something they told her about herself: act like my manager, give me hard
+something they told it about itself: act like my manager, give me hard
 feedback, never suggest mornings. Directives are rendered into the system
 prompt, so they are in front of the model on every turn without being
 recalled, and they can be changed from chat.

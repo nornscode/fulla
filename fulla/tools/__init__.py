@@ -80,11 +80,11 @@ manager_tools = [
 manager_tools += [send_message]
 # Fulla's own check-backs.
 manager_tools += [schedule_followup, list_followups, drop_followup, watch_environment]
-# Her timers in Norns, the scheduled turns among them. Owner-only by being the manager's.
+# Fulla's timers in Norns, the scheduled turns among them. Owner-only by being the manager's.
 manager_tools += [list_triggers, set_trigger, drop_trigger]
 # One run by its id, for "what happened in run 938". Owner-only the same way.
 manager_tools += [norns_run]
-# Who else may talk to her, and where. Owner-only by being the manager's.
+# Who else may talk to Fulla, and where. Owner-only by being the manager's.
 manager_tools += [allow_person, drop_person, list_people, allow_group, drop_group]
 # The owner's machines: what each is for, and forgetting one. Owner-only the same way.
 manager_tools += [list_machines, describe_machine, forget_machine]

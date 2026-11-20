@@ -123,7 +123,7 @@ def deliver(spool: Spool, send: Callable[[bytes], bool], wake: threading.Event,
 
 def interesting(payload: dict) -> bool:
     """Only data messages go to Fulla; receipts and typing are noise, and
-    each would wake her machine."""
+    each would wake Fulla's machine."""
     env = payload.get("envelope") or {}
     return bool(env.get("dataMessage"))
 

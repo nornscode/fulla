@@ -1,6 +1,6 @@
 """Gaps: things the owner asked for that Fulla cannot do.
 
-Not feedback (a critique of how she worked, for the humans) and not a
+Not feedback (a critique of how it worked, for the humans) and not a
 directive. A gap is a missing capability: what the owner asked, in their
 words, and one line of what was missing. Asked again, the same gap gains the
 new words rather than a second entry, so how often it bites is on record.
@@ -27,12 +27,12 @@ from pathlib import Path
 
 # The ladder, from the self-improvement design. The review picks the lowest that fits.
 RUNGS = {
-    1: "just do it: she had the tools and fumbled",
+    1: "just do it: Fulla had the tools and fumbled",
     2: "a directive or a line of the soul",
-    3: "an agent defined from tools she has",
+    3: "an agent defined from tools Fulla has",
     4: "allowlist a tool that already exists",
     5: "a new tool, additive only",
-    6: "a change to Fulla herself (or to Norns)",
+    6: "a change to Fulla itself (or to Norns)",
 }
 
 

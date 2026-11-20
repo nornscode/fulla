@@ -2,7 +2,7 @@
 checkout in one command.
 
 A machine needs the worker, a few values (the Norns URL and key, Fulla's URL,
-which tmux sessions she may reach, and on a non-Mac machine its name) and a
+which tmux sessions Fulla may reach, and on a non-Mac machine its name) and a
 service that keeps the worker up and pulls `main` hourly. This asks for the
 values it was not given as flags, writes them to ~/.config/fulla/<kind>.env,
 renders the launchd plists (Mac) or the systemd user units (anything else)
@@ -275,13 +275,13 @@ def gather(kind: str, args: argparse.Namespace, *, repo: Path = REPO, interactiv
         # Optional, so an absent flag with no terminal means what was set before, or nothing.
         sessions = had.get("FULLA_TMUX_SESSIONS", "")
         if interactive:
-            sessions = _ask("tmux sessions she may reach (comma-separated, empty for none)",
+            sessions = _ask("tmux sessions Fulla may reach (comma-separated, empty for none)",
                             sessions, interactive=True)
     shell = args.shell
     if shell is None:
         shell = had.get("FULLA_SHELL", "").strip().lower() in ("1", "true", "yes", "on")
         if interactive:
-            answer = _ask("give her a shell and the files on this machine, as this user? (y/n)",
+            answer = _ask("give Fulla a shell and the files on this machine, as this user? (y/n)",
                           "y" if shell else "n", interactive=True)
             shell = answer.strip().lower() in ("y", "yes", "1", "true", "on")
     v = Values(
@@ -315,9 +315,9 @@ def parser(kind: str) -> argparse.ArgumentParser:
     p.add_argument("--norns-url", help="the hosted Norns runtime")
     p.add_argument("--norns-api-key", help="its API key (prompted for, hidden, when not given)")
     p.add_argument("--fulla-url", help="the Fly app, e.g. https://fulla.fly.dev")
-    p.add_argument("--tmux-sessions", help="sessions she may reach, comma-separated; empty for none")
+    p.add_argument("--tmux-sessions", help="sessions Fulla may reach, comma-separated; empty for none")
     p.add_argument("--shell", dest="shell", action="store_true", default=None,
-                   help="give her a shell and the files on this machine, as this user")
+                   help="give Fulla a shell and the files on this machine, as this user")
     p.add_argument("--no-shell", dest="shell", action="store_false", help="keep the shell off")
     if kind == "host":
         p.add_argument("--host", help="this machine's name, lowercase letters and digits")

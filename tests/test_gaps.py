@@ -25,7 +25,7 @@ def test_store_add_same_as_propose_resolve(tmp_path):
     out = GapStore.render(GapStore(tmp_path / "g.json").all())
     assert "#1 (" in out and "asked 2 times" in out and "missing: cannot see images" in out
     assert "    asked: Can you look at this photo?" in out
-    assert "rung 6 (a change to Fulla herself (or to Norns)): Norns passes image blocks" in out
+    assert "rung 6 (a change to Fulla itself (or to Norns)): Norns passes image blocks" in out
     assert "[closed]" in out and "note: wontfix" in out
 
 

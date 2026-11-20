@@ -1,14 +1,14 @@
-"""Who Fulla is: her voice and character, in her own words, written with the owner.
+"""Who Fulla is: its voice and character, in its own words, written with the owner.
 
 A fact is about the world, a directive is a rule about what to do, feedback is
-what went wrong. The soul is none of those: it is how she talks and carries
-herself (how blunt, how warm, how much she says, what she calls the owner,
-whether she speaks up unasked). It lives in `soul.md` as a page of first-person
+what went wrong. The soul is none of those: it is how Fulla talks and carries
+itself (how blunt, how warm, how much it says, what it calls the owner,
+whether it speaks up unasked). It lives in `soul.md` as a page of first-person
 prose and is rendered into the manager's system prompt whole, so it is in front
 of the model on every turn.
 
 It starts unwritten. The prompt then carries a default voice and one
-instruction: on the owner's first real message, ask how they want her to be,
+instruction: on the owner's first real message, ask how they want it to be,
 and write it down. From then on it changes two ways: the owner asks ("be
 warmer", "stop with the jokes"), or the nightly review notices something about
 how they like to be dealt with and revises one line, marked as learned.
@@ -101,7 +101,7 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("show")
     st = sub.add_parser("set", help="replace the soul with the contents of a file ('-' for stdin)")
     st.add_argument("file")
-    sub.add_parser("clear", help="forget who she is; she asks again on the next message")
+    sub.add_parser("clear", help="forget who Fulla is; it asks again on the next message")
     args = parser.parse_args(argv)
 
     soul = Soul(Path(os.environ.get("FULLA_DATA_DIR", "./data")) / "soul.md")
@@ -116,7 +116,7 @@ def main(argv: list[str] | None = None) -> int:
             print(e, file=sys.stderr)
             return 1
         print("Written. It is in the prompt from the next time the worker joins; "
-              "ask her to `show_soul` to see it live.")
+              "ask Fulla to `show_soul` to see it live.")
         return 0
     print("Cleared." if soul.clear() else "Nothing to clear.")
     return 0

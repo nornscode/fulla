@@ -4,7 +4,7 @@ shell tools under the machine's own name: FULLA_HOST=box serves `box_tmux_list`,
 `box_tmux_read`, `box_tmux_send` and the rest, and `box_exec`, `box_read_file`
 and the other file tools (on with FULLA_SHELL=1, refusing otherwise), and
 joins Norns as the worker `fulla-box`. On start it announces itself to Fulla
-at FULLA_URL (see hosts.py); that is how she learns the machine exists, and
+at FULLA_URL (see hosts.py); that is how Fulla learns the machine exists, and
 nothing is configured on Fly.
 
 Runs under a systemd user service (see systemd/). Needs NORNS_URL,
@@ -53,7 +53,7 @@ def main():
     log.info("serving %d tools as %s; tmux: %s; shell: %s", len(agent.tools), agent.name,
              ", ".join(config.host.tmux_sessions) or "off", "on" if config.host.shell else "off")
     if not config.fulla.url:
-        log.warning("FULLA_URL is not set: Fulla will not learn this machine exists unless she already knows it")
+        log.warning("FULLA_URL is not set: Fulla will not learn this machine exists unless it already knows it")
     announce_until_named(config.fulla.url, config.norns.api_key, name=config.host.name,
                          sessions=config.host.tmux_sessions, worker_id=agent.name, shell=config.host.shell,
                          machine_id=config.host.machine_id)

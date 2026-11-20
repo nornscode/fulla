@@ -4,7 +4,7 @@ Runs under launchd on the owner's Mac (see launchd/com.fulla.mac.plist and
 __main__.py).
 Needs NORNS_URL (the hosted runtime's public URL) and NORNS_API_KEY. With
 FULLA_URL set it also announces itself to Fulla on start (see hosts.py), so
-she knows which tmux sessions the Mac allows.
+Fulla knows which tmux sessions the Mac allows.
 """
 
 from __future__ import annotations

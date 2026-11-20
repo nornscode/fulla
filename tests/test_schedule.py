@@ -1,4 +1,4 @@
-"""Her timers: local times to UTC cron and back, and the tools over Norns's triggers."""
+"""Fulla's timers: local times to UTC cron and back, and the tools over Norns's triggers."""
 
 from dataclasses import dataclass, field
 from datetime import datetime

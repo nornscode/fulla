@@ -18,7 +18,7 @@ ENV PATH="/app/.venv/bin:$PATH"
 ENV PYTHONDONTWRITEBYTECODE=1
 
 # The commit this image was built from (CI passes it), so Fulla can say which
-# of her own commits is running. Empty for a build by hand.
+# of its own commits is running. Empty for a build by hand.
 ARG FULLA_COMMIT=""
 ENV FULLA_COMMIT=$FULLA_COMMIT
 

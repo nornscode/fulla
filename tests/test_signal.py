@@ -91,7 +91,7 @@ def test_sender_falls_back_to_the_account_id_when_the_number_is_hidden():
 
 def test_groups_receipts_typing_and_empty_are_ignored():
     in_group = parse_envelope(envelope({"message": "hi", "groupInfo": {"groupId": "g"}}))
-    assert in_group.group and in_group.chat_id == "group:g"  # the channel decides whether she may speak there
+    assert in_group.group and in_group.chat_id == "group:g"  # the channel decides whether it may speak there
     assert parse_envelope({"envelope": {"sourceNumber": OWNER, "receiptMessage": {"isDelivery": True}}}) is None
     assert parse_envelope({"envelope": {"sourceNumber": OWNER, "typingMessage": {"action": "STARTED"}}}) is None
     assert parse_envelope(envelope({"message": ""})) is None

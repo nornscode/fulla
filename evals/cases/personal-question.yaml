@@ -1,7 +1,7 @@
 why: >
-  The owner wanted her to fill out what she knows of them by asking now and
+  The owner wanted Fulla to fill out what it knows of them by asking now and
   then, unprompted. The "[scheduled] question" turn asks one personal question
-  built on what she already knows, in the reply, never with ask_human.
+  built on what it already knows, in the reply, never with ask_human.
 now: "2026-10-20T19:30:00"
 messages:
   - user: "[scheduled] question"

@@ -3,7 +3,7 @@ owner's, so the social agent never sleeps.
 
 The social agent answers in a conversation that other people are talking
 in. If it called `wait`, the conversation would be busy until the timer
-ended and everyone's next message would queue behind it; to the group she
+ended and everyone's next message would queue behind it; to the group it
 would have gone deaf. So a timed thing in a group is a run of
 `fulla-group-reminder`, which sleeps and then finishes with one line, and
 the channel posts that line back into the group the reminder came from.
@@ -97,7 +97,7 @@ def _index_for_current_run() -> Path:
 def known(run_id: int) -> dict | None:
     """The reminder Fulla scheduled under this run id, with the run that
     scheduled it (`parent`), or None: a run of the agent started some other
-    way is not hers and is not relayed."""
+    way is not Fulla's and is not relayed."""
     for path in _indexes():
         entry = _load(path).get(str(run_id))
         if entry is not None:

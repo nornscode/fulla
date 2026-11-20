@@ -39,7 +39,7 @@ def _host(name, platform="linux", sessions=("dev",)):
 def test_map_lists_every_subagent_and_machine_and_leaves_her_own_tools_to_the_list(tmp_path):
     hosts = HostStore(tmp_path / "hosts.json")
     out = capability_map("Robin", hosts)
-    # Her own tools are in her tool list on every turn; the map does not name them again.
+    # Its own tools are in its tool list on every turn; the map does not name them again.
     assert "Your own tools are the ones in your tool list on every turn." in out
     assert "note_gap" not in out and "`wait`" not in out
     for name in SUBAGENTS:
@@ -90,7 +90,7 @@ def test_the_limits_hold_where_they_say():
     assert "wait" in WITHHELD[MANAGER_AGENT]
     names = {t.name for t in manager_tools}
     assert not names & {"web_search", "fetch_url"}
-    # fulla-social is not the manager's to launch, and holds none of her tools.
+    # fulla-social is not the manager's to launch, and holds none of its tools.
     assert SOCIAL_AGENT not in SUBAGENTS
     assert not {t.name for t in social_tools} & (names - {"now"})
 

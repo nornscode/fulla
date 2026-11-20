@@ -50,7 +50,7 @@ def _save(index: dict[str, dict]):
 
 
 def known(run_id: int) -> bool:
-    """Whether Fulla queued this run; the channel relays Mac task runs only if she did."""
+    """Whether Fulla queued this run; the channel relays Mac task runs only if it did."""
     return str(run_id) in _load()
 
 

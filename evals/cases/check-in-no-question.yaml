@@ -3,7 +3,7 @@ why: >
   `ask_human` with the question "placeholder" instead of writing it. The run
   parked on the standing conversation, the owner was sent "placeholder", and
   the next timer two hours later was read as the answer. A scheduled turn is no
-  longer offered `ask_human`: what she has to say goes in the reply, or she
+  longer offered `ask_human`: what it has to say goes in the reply, or it
   stays silent.
 now: "2026-10-29T15:00:00"
 messages:

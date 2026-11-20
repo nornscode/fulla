@@ -1,7 +1,7 @@
 why: >
   Claude Code dims the placeholder in its input box. Before it was marked, the
   manager read it as text typed and not sent. Now it arrives wrapped in «…»,
-  and she must not report it as input waiting in the box.
+  and Fulla must not report it as input waiting in the box.
 connected: [mac]
 known:
   mac: [work]
