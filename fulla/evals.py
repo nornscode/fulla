@@ -14,7 +14,7 @@ prompt and its tool list (the turn note is a no-op there, as on Fly), with a
 `user:` message's `from:` marked as the channel marks it (untrusted unless
 it is the owner).
 
-Every fixed bug adds a case. See README.md, "Evals".
+Every fixed bug adds a case. See docs/evals.md.
 """
 
 from __future__ import annotations

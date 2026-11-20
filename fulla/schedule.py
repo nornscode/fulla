@@ -31,7 +31,7 @@ from datetime import datetime
 from zoneinfo import ZoneInfo
 
 # The scheduled turns the prompt describes, by trigger name: the message each
-# must carry for the manager to recognise it, and the README's default time.
+# must carry for the manager to recognise it, and the default time in docs/using.md.
 TURNS = {
     "morning-brief": ("[scheduled] morning brief", "every day at 08:00"),
     "check-in": ("[scheduled] check-in", "every day at 09:00, 11:00, 13:00, 15:00, 17:00, 19:00"),
