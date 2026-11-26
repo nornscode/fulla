@@ -179,7 +179,7 @@ def test_the_watcher_is_small_reads_only_and_the_manager_is_told_to_use_it(monke
     assert "Never call `ask_human`" in watch.system_prompt
     # The first message (what to watch) never leaves the window during a whole watch.
     assert watch.context_window > 3 * watch.max_steps
-    assert "Never `schedule_followup` to check a sandbox" in manager.system_prompt
+    assert "Never wait on, poll or `schedule_followup` for a sandbox" in manager.system_prompt
     # Only the manager runs on the big model.
     assert manager.model == "claude-opus-5-5"
     assert {agents[n].model for n in ("fulla-watch", "fulla-followup", "fulla-reminder",
