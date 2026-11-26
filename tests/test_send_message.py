@@ -71,6 +71,18 @@ def test_the_prompt_says_how_to_use_it(config, tmp_path):
     assert "`send_message`" in prompt and "tmux session" in prompt
 
 
+def test_the_prompt_asks_for_a_conversation_not_a_blast(config, tmp_path):
+    """The owner, on a reader's report passed on whole: "let's get through it on
+    a few turns". The short lead, the hook and the reader's best option, beside
+    the rules they joined."""
+    prompt = manager_prompt(config, DirectiveStore(tmp_path / "d.json"))
+    assert "single best answer or next step" in prompt
+    assert "No headed sections, bold headers or bullet lists" in prompt
+    assert "one short hook" in prompt
+    assert "most useful option" in prompt and "not its whole report" in prompt
+    assert '"Got it"' in prompt and "texting a friend" in prompt and "contractions" in prompt
+
+
 def test_the_quiet_scheduled_turns_are_not_offered_it_and_the_others_are():
     def turn(text):
         return [{"role": "user", "content": text}]

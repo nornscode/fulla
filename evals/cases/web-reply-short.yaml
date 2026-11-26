@@ -1,0 +1,25 @@
+why: >
+  Asked about garbage disposal options, the manager passed on the reader's
+  whole report: a long message with bold headers and many bullets
+  (2026-11-26). It should lead with the best option and its source in a few
+  sentences and offer the rest, so the owner pulls more over a few turns.
+messages:
+  - user: "what are my options for getting rid of an old couch on the island?"
+stubs:
+  launch_agent: |
+    Options for disposing of a couch on the island:
+    1. Municipal bulky-item pickup: free, twice a year, book online at islandcounty.gov/bulky (next pickup Dec 9).
+    2. Island transfer station: $25 per item, open Wed-Sun 9-4 (islandcounty.gov/transfer).
+    3. Habitat ReStore donation: free pickup if in good condition, call 555-0142 (habitat.org/restore).
+    4. Mainland options: GotJunk (from $129, 1-800-468-5865), City of Vancouver landfill ($15 + ferry).
+    5. Curb listing on Facebook Marketplace or Craigslist "free" section.
+    Sources: islandcounty.gov, habitat.org, 1800gotjunk.com
+checks:
+  - called: launch_agent
+  - not_reply: "\\*\\*"
+  - not_reply: "(?m)^\\s*#"
+  - not_reply: "(?m)^\\s*([-•*]|\\d+\\.) "
+  - judge: >
+      Does the reply lead with one best option (with its source) in at most
+      three short sentences, leave out the rest of the reader's report, and
+      end with one short offer to tell the owner more?

@@ -149,5 +149,5 @@ def test_manager_holds_the_coding_tools_but_this_worker_never_serves_them(tmp_pa
     assert set(CODING_TOOLS) <= set(manager.allowed_tools)
     assert not set(CODING_TOOLS) & {t.name for t in manager_tools}
     assert "Coding sandboxes, from the Bubbo worker" in capability_map("Robin", hosts)
-    assert "Never `schedule_followup` to check a sandbox" in manager.system_prompt
+    assert "Never wait on, poll or `schedule_followup` for a sandbox" in manager.system_prompt
     assert "with `pull_request` set to its number" in manager.system_prompt

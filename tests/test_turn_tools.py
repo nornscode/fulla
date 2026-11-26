@@ -30,7 +30,8 @@ from fulla.worker import (
 KNOWN = {t.name for t in manager_tools} | {t.name for t in mac_tools}
 MACHINE = tmux.tool_names("box") + shell.tool_names("box")
 PROMPT = "You are Fulla. ... `mac_things_add` for Things ..."
-# Characters, with no machines, sources or directives and the soul unwritten: 18,761 when set.
+# Characters, with no machines, sources or directives, the soul unwritten and the
+# default owner name ("the owner"): 18,865 when set.
 BUDGET = 19_000
 
 
